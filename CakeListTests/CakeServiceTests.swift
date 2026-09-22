@@ -25,8 +25,9 @@ struct CakeServiceTests {
         let jsonData =
                 """
                 [
-                    {"id": "1", "title": "Cake A", "description": "Desc A", "image": null},
-                    {"id": "2", "title": "Cake B", "description": "Desc B", "image": null}
+                    {"title": "Cake A", "desc": "Desc A", "image": "placeholder"},
+                    {"title": "Cake A", "desc": "Desc A", "image": "placeholder"},
+                    {"title": "Cake B", "desc": "Desc B", "image": "placeholder"}
                 ]
                 """.data(using: .utf8)!
         
