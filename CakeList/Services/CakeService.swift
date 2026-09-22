@@ -45,7 +45,10 @@ class CakeService: CakeServiceProtocol {
         let decoder = JSONDecoder()
         let cakes = try decoder.decode([Cake].self, from: data)
         
-        return cakes
+        let uniqueCakes = Array(Set(cakes))
+        
+        return uniqueCakes
+
     }
 }
 
