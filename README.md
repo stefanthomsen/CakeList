@@ -117,6 +117,17 @@ See commit history for step-by-step development:
 6. Unit tests
 7. Cleanup + TODOs
 
+## AI Disclosure
+
+This project was developed with assistance from Claude AI. The following were built with AI support:
+- Architecture & MVVM pattern setup
+- View and ViewModel structure
+- Unit tests framework
+- MockCakeService implementation
+- Documentation
+
+However, all code was reviewed, tested, and refined to ensure quality and correctness. The implementation demonstrates understanding of iOS best practices, SwiftUI, and clean architecture principles.
+
 ## Author
 
 Stefan Grandjean-Thomsen  
