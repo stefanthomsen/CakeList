@@ -2,6 +2,12 @@
 
 A simple iOS app that loads and displays a list of cakes from a remote API.
 
+## Screenshots
+
+| Loaded | Loading | Error |
+|--------|---------|-------|
+| <img src="https://github.com/user-attachments/assets/e6753c03-c8c7-406d-a462-3c2af6fbdfd8" width="200" /> | <img src="https://github.com/user-attachments/assets/be11b3e2-11f2-4d27-9139-2e9e7d0f0ac0" width="200" /> | <img src="https://github.com/user-attachments/assets/4cb08126-e8f3-4a97-b180-d9ad532c28cf" width="200" /> |
+
 ## Architecture
 
 Built using **MVVM** (Model-View-ViewModel) pattern with clean separation of concerns:
