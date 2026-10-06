@@ -9,8 +9,8 @@ import Foundation
 
 struct Constants {
     struct API {
-        static let baseURL = "https://raw.githubusercontent.com/Waracle/mobile-coding-test-api/refs/heads/main"
-        static let cakesEndpoint = "/cakes"
+        static let baseURL = "https://interview.waracle.workers.dev"
+        static let cakesEndpoint = "/"
         static let timeout: TimeInterval = 10
     }
 }

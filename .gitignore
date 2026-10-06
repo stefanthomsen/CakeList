@@ -1,66 +1,38 @@
-### macOS
-# Finder metadata
-.DS_Store
-
-# Thumbnails
-._*
-
-# Custom folder icons
-Icon
-
-# Volume root files
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-### Xcode
-# Xcode user settings
-xcuserdata/
-
-# Xcode build artifacts
+# Xcode
 build/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/xcshareddata/
 DerivedData/
-
-# Obj-C/Swift specific
 *.hmap
 *.ipa
 *.dSYM.zip
 *.dSYM
 
-# Playgrounds
-timeline.xctimeline
-playground.xcworkspace
+# CocoaPods
+Pods/
+Podfile.lock
 
-# Xcode state files
-*.xccheckout
-*.moved-aside
-*.xcuserstate
-*.xcscmblueprint
+# SPM
+.build/
+.swiftpm/
 
+# IDE
+.DS_Store
+.vscode/
+*.swp
+*.swo
+*~
 
-### Swift
-# Xcode user settings
-xcuserdata/
+# OS
+.DS_Store
+Thumbs.db
 
-# Xcode build data
-DerivedData/
-
-# Swift/Obj-C specific
-*.hmap
-
-# App packaging
-*.ipa
-*.dSYM.zip
-*.dSYM
-
-# Playgrounds
-timeline.xctimeline
-playground.xcworkspace
-
-# Swift Package Manager
-# Package.resolved
-CakeList.xcodeproj/xcuserdata
+# Environment
+.env
+.env.local

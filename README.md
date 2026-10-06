@@ -61,6 +61,12 @@ CakeListTests/
 └── CakeServiceTests.swift
 ```
 
+## Screenshots
+
+| Loading | Loaded | Error |
+|---------|--------|-------|
+| ![Loading](screenshots/loading.png) | ![Loaded](screenshots/loaded.png) | ![Error](screenshots/error.png) |
+
 ## How to Run
 
 1. Open `CakeList.xcodeproj` in Xcode

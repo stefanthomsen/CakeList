@@ -7,6 +7,6 @@
 
 enum ViewState<T> {
     case loading
-    case loaded(T)
+    case loaded(T, isRefreshing: Bool)
     case error(String)
 }

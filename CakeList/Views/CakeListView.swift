@@ -28,32 +28,8 @@ struct CakeListView<ViewModel: CakeListViewModelProtocol>: View {
                             .foregroundStyle(.secondary)
                     }
 
-                case .loaded(let cakes):
-                    List {
-                        ForEach(cakes, id: \.id) { cake in
-                            CakeRowView(cake: cake)
-                                .onTapGesture {
-                                    selectedCake = cake
-                                }
-                                .listRowSeparator(.visible)
-                        }
-                    }
-                    .listStyle(.plain)
-                    .refreshable {
-                        await viewModel.loadCakes()
-                    }
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button(action: {
-                                Task {
-                                    await viewModel.loadCakes()
-                                }
-                            }) {
-                                Image(systemName: "arrow.clockwise")
-                            }
-                        }
-                    }
-
+                case .loaded(let cakes, let isRefreshing):
+                    cakeList(cakes, isRefreshing: isRefreshing)
                 case .error(let message):
                     VStack(spacing: 16) {
                         Text("Oops, something went wrong")
@@ -90,6 +66,37 @@ struct CakeListView<ViewModel: CakeListViewModelProtocol>: View {
             await viewModel.loadCakes()
         }
     }
+    
+    fileprivate func cakeList(_ cakes: [Cake], isRefreshing: Bool) -> some View {
+        return List {
+            if isRefreshing {
+                Text("Updating...")
+            }
+            ForEach(cakes, id: \.id) { cake in
+                Button  {
+                    selectedCake = cake
+                } label: {
+                    CakeRowView(cake: cake)
+                }
+                .listRowSeparator(.visible)
+            }
+        }
+        .listStyle(.plain)
+        .refreshable {
+            await viewModel.refresh()
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    Task {
+                        await viewModel.refresh()
+                    }
+                }) {
+                    Image(systemName: "arrow.clockwise")
+                }
+            }
+        }
+    }
 }
 
 #Preview("Loaded") {
@@ -106,22 +113,22 @@ struct CakeListView<ViewModel: CakeListViewModelProtocol>: View {
 
 #if DEBUG
 extension CakeListViewModel {
-    static let loadedPreview: MockCakeListViewModel = {
+    @MainActor static let loadedPreview: MockCakeListViewModel = {
         let vm = MockCakeListViewModel()
         vm.viewState = .loaded([
-            Cake(title: "Chocolate Cake", desc: "Rich chocolate", image: "https://via.placeholder.com/200"),
-            Cake(title: "Vanilla Cake", desc: "Classic vanilla", image: "https://via.placeholder.com/200")
-        ])
+            Cake(title: "Chocolate Cake", desc: "Rich chocolate", image: "https://www.lolas.co.uk/cdn/shop/files/ChocolateandRaspberryDinners_0cacf994-7fe5-468a-b420-bfe00548554f.jpg?v=1773675676"),
+            Cake(title: "Vanilla Cake", desc: "Classic vanilla", image: "https://www.lolas.co.uk/cdn/shop/files/ChocolateandRaspberryDinners_0cacf994-7fe5-468a-b420-bfe00548554f.jpg?v=1773675676")
+        ], isRefreshing: false)
         return vm
     }()
     
-    static let loadingPreview: MockCakeListViewModel = {
+    @MainActor static let loadingPreview: MockCakeListViewModel = {
         let vm = MockCakeListViewModel()
         vm.viewState = .loading
         return vm
     }()
     
-    static let errorPreview: MockCakeListViewModel = {
+    @MainActor static let errorPreview: MockCakeListViewModel = {
         let vm = MockCakeListViewModel()
         vm.viewState = .error("Error")
         return vm
@@ -129,6 +136,8 @@ extension CakeListViewModel {
 }
 
 class MockCakeListViewModel: CakeListViewModelProtocol {
+    func refresh() async { }
+    
     @Published var viewState: ViewState<[Cake]> = .loading
     
     func loadCakes() async {}

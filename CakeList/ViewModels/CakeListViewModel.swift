@@ -14,6 +14,7 @@ protocol CakeListViewModelProtocol: ObservableObject {
     
     func loadCakes() async
     func retry() async
+    func refresh() async
 }
 
 final class CakeListViewModel: CakeListViewModelProtocol {
@@ -28,11 +29,9 @@ final class CakeListViewModel: CakeListViewModelProtocol {
     @MainActor
     func loadCakes() async {
         viewState = .loading
-        
         do {
-            let cakes = try await service.fetchCakes()
-            let sortedCakes = cakes.sorted { $0.title.lowercased() < $1.title.lowercased() }
-            viewState = .loaded(sortedCakes)
+            let cakes = try await load()
+            viewState = .loaded(cakes, isRefreshing: false)
         } catch {
             viewState = .error(error.localizedDescription)
         }
@@ -41,5 +40,26 @@ final class CakeListViewModel: CakeListViewModelProtocol {
     @MainActor
     func retry() async {
         await loadCakes()
+    }
+    
+    @MainActor
+    func refresh() async {
+        if case .loaded(let cakes, _) = viewState {
+            viewState = .loaded(cakes, isRefreshing: true)
+        } else {
+            viewState = .loading
+        }
+        
+        do {
+            let cakes = try await load()
+            viewState = .loaded(cakes, isRefreshing:false)
+        } catch {
+            viewState = .error(error.localizedDescription)
+        }
+    }
+    
+    private func load() async throws -> [Cake] {
+        let cakes = try await service.fetchCakes()
+        return cakes.sorted { $0.title.lowercased() < $1.title.lowercased() }
     }
 }

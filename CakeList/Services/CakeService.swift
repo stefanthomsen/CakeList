@@ -19,12 +19,20 @@ protocol CakeServiceProtocol {
 
 class CakeService: CakeServiceProtocol {
     private let session: URLSessionProtocol
+    private let tokenService: TokenServiceProtocol
     
-    init(session: URLSessionProtocol = URLSession.shared) {
+    init(session: URLSessionProtocol = URLSession.shared,
+         tokenService: TokenServiceProtocol = TokenService()) {
+        
         self.session = session
+        self.tokenService = tokenService
     }
     
     func fetchCakes() async throws -> [Cake] {
+    
+        try await Task.sleep(for: .milliseconds(3000))
+        
+        let token = try await tokenService.getToken()
         
         guard let url = URL(string: Constants.API.baseURL + Constants.API.cakesEndpoint) else {
             #if DEBUG
@@ -35,7 +43,10 @@ class CakeService: CakeServiceProtocol {
             #endif
         }
         
-        let (data, response) = try await session.data(for: URLRequest(url: url))
+        var urlRequest = URLRequest(url: url)
+        urlRequest.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await session.data(for: urlRequest)
         
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
